@@ -1,10 +1,12 @@
 import React from 'react';
-import Counter from '@/app/_features/counter/Counter';
+import Posts from '@/_features/posts/Posts';
+import AddPostForm from '@/_ui/form/posts/AddPostForm';
 
 export default function Home() {
     return (
         <React.Fragment>
-            <Counter/>
+            <AddPostForm/>
+            <Posts/>
         </React.Fragment>
     );
 }
