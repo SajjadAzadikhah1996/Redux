@@ -13,9 +13,8 @@ interface AddPostFormElements extends HTMLFormElement {
     readonly elements: AddPostFormFields;
 }
 
-import { nanoid } from '@reduxjs/toolkit';
 import { useAppDispatch } from '@/_hooks/redux';
-import { Post, postAdded } from '@/_store/slice/postSlice';
+import {  postAdded } from '@/_store/slice/postSlice';
 
 export default function AddPostForm() {
     const dispatch = useAppDispatch();
@@ -28,12 +27,7 @@ export default function AddPostForm() {
         const title = elements.postTitle.value;
         const content = elements.postContent.value;
 
-        const newPost: Post = {
-            id: nanoid(),
-            title,
-            content
-        };
-        dispatch( postAdded( newPost ) );
+        dispatch( postAdded( title, content ) );
 
         e.currentTarget.reset();
     };

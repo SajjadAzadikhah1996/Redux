@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import './globals.css';
 import React from 'react';
 import ReduxServiceProvider from '@/_provider/ReduxServiceProvider';
+import MainNavbar from '@/_ui/navbar/MainNavbar';
 
 export const metadata: Metadata = {
     title: 'Create Next App',
@@ -13,6 +14,7 @@ export default function RootLayout( { children }: Readonly<{ children: React.Rea
         <html lang = 'en'>
             <body className = { `antialiased` }>
                 <ReduxServiceProvider>
+                    <MainNavbar/>
                     { children }
                 </ReduxServiceProvider>
             </body>

@@ -1,4 +1,5 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, nanoid, PayloadAction } from '@reduxjs/toolkit';
+import { RootState } from '@/_store/store';
 
 // Define a TS type for the data we'll be using
 export interface Post {
@@ -18,18 +19,39 @@ const postsSlice = createSlice( {
     name: 'posts',
     initialState,
     reducers: {
-        // Declare a "case reducer" named `postAdded`.
-        // The type of `action.payload` will be a `Post` object.
-        postAdded( state, action: PayloadAction<Post> ) {
-            // "Mutate" the existing state array, which is
-            // safe to do here because `createSlice` uses Immer inside.
-            state.push( action.payload );
+        postAdded: {
+            reducer( state, action: PayloadAction<Post> ) {
+                state.push( action.payload );
+            },
+            prepare( title: string, content: string ) {
+                return {
+                    payload: { id: nanoid(), title, content }
+                };
+            }
+        },
+        postUpdated( state, action: PayloadAction<Post> ) {
+            const { id, title, content } = action.payload;
+            const existingPost = state.find( post => post.id === id );
+            if ( existingPost ) {
+                existingPost.title = title;
+                existingPost.content = content;
+            }
+        }
+    },
+    selectors: {
+        selectAllPosts: ( postState ) => postState,
+
+        selectPostById: ( postState, postId: string ) => {
+            return postState.find( post => post.id === postId );
         }
     }
 } );
 
 // Export the auto-generated action creator with the same name
-export const { postAdded } = postsSlice.actions;
+export const { postAdded, postUpdated } = postsSlice.actions;
+
+// Export the slice selectors
+export const { selectAllPosts, selectPostById } = postsSlice.selectors;
 
 // Export the generated reducer function
 const { reducer: postReducer } = postsSlice;
