@@ -10,6 +10,9 @@ export default function MainNavbar() {
                     <div className = 'navLinks'>
                         <Link href = '/'>Posts</Link>
                     </div>
+                    <div className = 'navLinks'>
+                        <Link href = '/user'>Users</Link>
+                    </div>
                 </div>
             </section>
         </nav>
