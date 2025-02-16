@@ -1,5 +1,6 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 import { RootState } from '@/_store/store';
+import { selectCurrentUsername } from '@/_store/slice/authSlice';
 
 interface User {
     id: string;
@@ -23,5 +24,10 @@ export default userReducer;
 
 export const selectAllUsers = ( state: RootState ) => state.users;
 
-export const selectUserById = ( state: RootState, userId: string ) =>
+export const selectUserById = ( state: RootState, userId: string | null ) =>
     state.users.find( user => user.id === userId );
+
+export const selectCurrentUser = ( state: RootState ) => {
+    const currentUsername = selectCurrentUsername( state );
+    return selectUserById( state, currentUsername );
+};

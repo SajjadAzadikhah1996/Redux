@@ -4,11 +4,14 @@ import { useParams } from 'next/navigation';
 import { useAppSelector } from '@/_hooks/redux';
 import { selectPostById } from '@/_store/slice/postSlice';
 import Link from 'next/link';
+import { selectCurrentUsername } from '@/_store/slice/authSlice';
+import { ReactionButtons } from '@/_features/posts/ReactionButtons';
 
 export default function Page() {
     const { postId } = useParams<{ postId: string }>();
 
     const post = useAppSelector( state => selectPostById( state, postId ) );
+    const currentUsername = useAppSelector( selectCurrentUsername )!;
 
     if ( !post ) {
         return (
@@ -18,13 +21,20 @@ export default function Page() {
         );
     }
 
+    const canEdit = currentUsername === post.user;
+
     return (
         <section>
             <article className = 'post'>
                 <h2>{ post.title }</h2>
                 <p className = 'post-content'>{ post.content }</p>
                 <br/>
-                <Link href = { `/post/${ postId }/edit` } className = 'px-4 py-2 text-white bg-[var(--redux-color)]'>Edit</Link>
+                <ReactionButtons post = { post }/>
+                { canEdit && (
+                    <Link href = { `/post/${ postId }/edit` } className = 'button'>
+                        Edit Post
+                    </Link>
+                ) }
             </article>
         </section>
     );

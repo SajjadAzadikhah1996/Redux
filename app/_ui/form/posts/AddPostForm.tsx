@@ -17,10 +17,12 @@ interface AddPostFormElements extends HTMLFormElement {
 import { useAppDispatch, useAppSelector } from '@/_hooks/redux';
 import { postAdded } from '@/_store/slice/postSlice';
 import { selectAllUsers } from '@/_store/slice/userSlice';
+import { selectCurrentUsername } from '@/_store/slice/authSlice';
 
 export default function AddPostForm() {
     const dispatch = useAppDispatch();
     const users = useAppSelector( selectAllUsers );
+    const userId = useAppSelector(selectCurrentUsername)!
 
     const handleSubmit = ( e: React.FormEvent<AddPostFormElements> ) => {
         // Prevent server submission
@@ -29,7 +31,6 @@ export default function AddPostForm() {
         const { elements } = e.currentTarget;
         const title = elements.postTitle.value;
         const content = elements.postContent.value;
-        const userId = elements.postAuthor.value;
 
         dispatch( postAdded( title, content, userId ) );
 
@@ -50,10 +51,6 @@ export default function AddPostForm() {
                 <label htmlFor = 'postTitle'>Post Title:</label>
                 <input type = 'text' id = 'postTitle' defaultValue = '' required className = 'border-2'/>
                 <label htmlFor = 'postAuthor'>Author:</label>
-                <select id = 'postAuthor' name = 'postAuthor' required className = 'border-2'>
-                    <option value = ''></option>
-                    { usersOptions }
-                </select>
                 <label htmlFor = 'postContent'>Content:</label>
                 <textarea
                     id = 'postContent'

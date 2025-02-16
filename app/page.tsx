@@ -1,12 +1,13 @@
 import React from 'react';
 import Posts from '@/_features/posts/Posts';
 import AddPostForm from '@/_ui/form/posts/AddPostForm';
+import ProtectedRoute from '@/_ui/layout/ProtectedRoute';
 
 export default function Home() {
     return (
-        <React.Fragment>
+        <ProtectedRoute>
             <AddPostForm/>
             <Posts/>
-        </React.Fragment>
+        </ProtectedRoute>
     );
 }
