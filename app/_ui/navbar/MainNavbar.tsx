@@ -1,10 +1,10 @@
 'use client';
 
 import Link from 'next/link';
-import { useAppDispatch, useAppSelector } from '@/_hooks/redux';
-import { selectCurrentUser } from '@/_store/slice/userSlice';
-import { userLoggedOut } from '@/_store/slice/authSlice';
 import { UserIcon } from '@/_ui/icon/UserIcon';
+import { useAppDispatch, useAppSelector } from '@/_store/withType';
+import React from 'react';
+import { logout, selectCurrentUser } from '@/_store/slice/authSlice';
 
 export default function MainNavbar() {
     const dispatch = useAppDispatch();
@@ -16,13 +16,14 @@ export default function MainNavbar() {
 
     if ( isLoggedIn ) {
         const onLogoutClicked = () => {
-            dispatch( userLoggedOut() );
+            dispatch( logout() );
         };
 
         navContent = (
             <div className = 'navContent'>
                 <div className = 'navLinks'>
                     <Link href = '/'>Posts</Link>
+                    <Link href = '/user'>Users</Link>
                 </div>
                 <div className = 'userDetails'>
                     <UserIcon size = { 32 }/>

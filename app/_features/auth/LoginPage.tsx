@@ -1,10 +1,10 @@
 'use client';
 
 import React from 'react';
-import { useAppDispatch, useAppSelector } from '@/_hooks/redux';
-import { selectAllUsers } from '@/_store/slice/userSlice';
+import { selectAllUsers, User } from '@/_store/slice/userSlice';
 import { useRouter } from 'next/navigation';
-import { userLoggedIn } from '@/_store/slice/authSlice';
+import { login } from '@/_store/slice/authSlice';
+import { useAppDispatch, useAppSelector } from '@/_store/withType';
 
 interface LoginPageFormFields extends HTMLFormControlsCollection {
     username: HTMLSelectElement;
@@ -19,11 +19,11 @@ export const LoginPage = () => {
     const users = useAppSelector( selectAllUsers );
     const router = useRouter();
 
-    const handleSubmit = ( e: React.FormEvent<LoginPageFormElements> ) => {
+    const handleSubmit = async ( e: React.FormEvent<LoginPageFormElements> ) => {
         e.preventDefault();
 
-        const username = e.currentTarget.elements.username.value;
-        dispatch( userLoggedIn( username ) );
+        const user = users.find( ( user ) => user.id === e.currentTarget.elements.username.value ) as User;
+        await dispatch( login( user ) );
         router.push( '/' );
     };
 

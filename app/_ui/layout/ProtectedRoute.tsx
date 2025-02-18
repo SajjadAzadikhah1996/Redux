@@ -1,20 +1,21 @@
 'use client';
 
-import { useAppSelector } from '@/_hooks/redux';
-import { selectCurrentUsername } from '@/_store/slice/authSlice';
 import { useRouter } from 'next/navigation';
 import React, { useEffect } from 'react';
+import { useAppSelector } from '@/_store/withType';
+import { selectAuthStatus, selectCurrentUser } from '@/_store/slice/authSlice';
 
 export default function ProtectedRoute( { children }: { children: React.ReactNode } ) {
-    const username = useAppSelector( selectCurrentUsername );
+    const user = useAppSelector( selectCurrentUser );
+    const status = useAppSelector( selectAuthStatus );
     const router = useRouter();
 
     useEffect( () => {
-        if ( !username )
+        if ( status === 'idle' && !user )
             router.push( '/login' );
-    }, [ username ] );
+    }, [ user, status ] );
 
-    if ( !username ) {
+    if ( !user ) {
         return null;
     }
     return children;

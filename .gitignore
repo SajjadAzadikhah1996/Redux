@@ -4,6 +4,7 @@
 /node_modules
 /.pnp
 /.idea
+/server/node_modules
 .pnp.*
 .yarn/*
 !.yarn/patches

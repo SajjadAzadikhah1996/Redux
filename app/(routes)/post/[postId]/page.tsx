@@ -1,17 +1,17 @@
 'use client';
 
 import { useParams } from 'next/navigation';
-import { useAppSelector } from '@/_hooks/redux';
 import { selectPostById } from '@/_store/slice/postSlice';
 import Link from 'next/link';
-import { selectCurrentUsername } from '@/_store/slice/authSlice';
 import { ReactionButtons } from '@/_features/posts/ReactionButtons';
+import { useAppSelector } from '@/_store/withType';
+import { selectCurrentUser } from '@/_store/slice/authSlice';
 
 export default function Page() {
     const { postId } = useParams<{ postId: string }>();
 
     const post = useAppSelector( state => selectPostById( state, postId ) );
-    const currentUsername = useAppSelector( selectCurrentUsername )!;
+    const currentUser = useAppSelector( selectCurrentUser )!;
 
     if ( !post ) {
         return (
@@ -21,7 +21,7 @@ export default function Page() {
         );
     }
 
-    const canEdit = currentUsername === post.user;
+    const canEdit = currentUser.id === post.user.id;
 
     return (
         <section>

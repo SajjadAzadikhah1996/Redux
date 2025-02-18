@@ -1,0 +1,176 @@
+{
+  "posts": [
+    {
+      "id": "d62a",
+      "title": "Sunt perferendis ill",
+      "content": "Vel vel adipisicing ",
+      "userId": "1",
+      "date": "2025-02-18T14:56:39.396Z",
+      "reactions": {
+        "thumbsUp": 0,
+        "tada": 0,
+        "heart": 0,
+        "rocket": 0,
+        "eyes": 0
+      }
+    },
+    {
+      "id": "afad",
+      "title": "Et sequi est error e",
+      "content": "Dolorum cumque commo",
+      "userId": "1",
+      "date": "2025-02-18T17:25:36.807Z",
+      "reactions": {
+        "thumbsUp": 0,
+        "tada": 0,
+        "heart": 0,
+        "rocket": 0,
+        "eyes": 0
+      }
+    },
+    {
+      "id": "ae0c",
+      "title": "Repudiandae asperior",
+      "content": "Libero qui non conse",
+      "userId": "2",
+      "date": "2025-02-18T17:25:46.679Z",
+      "reactions": {
+        "thumbsUp": 0,
+        "tada": 0,
+        "heart": 0,
+        "rocket": 0,
+        "eyes": 0
+      }
+    },
+    {
+      "id": "2a13",
+      "title": "Autem placeat omnis",
+      "content": "Nostrud id ipsum ei",
+      "userId": "3",
+      "date": "2025-02-18T17:26:01.383Z",
+      "reactions": {
+        "thumbsUp": 0,
+        "tada": 0,
+        "heart": 0,
+        "rocket": 0,
+        "eyes": 0
+      }
+    },
+    {
+      "id": "6535",
+      "title": "Irure doloribus quae",
+      "content": "Culpa qui eum rerum",
+      "userId": "3",
+      "date": "2025-02-18T17:26:04.184Z",
+      "reactions": {
+        "thumbsUp": 0,
+        "tada": 0,
+        "heart": 0,
+        "rocket": 0,
+        "eyes": 0
+      }
+    },
+    {
+      "id": "a1e1",
+      "title": "Nam provident ut do",
+      "content": "Veniam eum enim obc",
+      "userId": "3",
+      "date": "2025-02-18T18:26:03.020Z",
+      "reactions": {
+        "thumbsUp": 0,
+        "tada": 0,
+        "heart": 0,
+        "rocket": 0,
+        "eyes": 0
+      }
+    },
+    {
+      "id": "587c",
+      "title": "Eaque neque voluptas",
+      "content": "Sit quaerat in exerc",
+      "userId": "1",
+      "date": "2025-02-18T18:29:37.340Z",
+      "reactions": {
+        "thumbsUp": 0,
+        "tada": 0,
+        "heart": 0,
+        "rocket": 0,
+        "eyes": 0
+      }
+    },
+    {
+      "id": "0211",
+      "title": "Cupidatat eius volup",
+      "content": "Nisi repellendus Si",
+      "userId": "3",
+      "date": "2025-02-18T18:39:24.805Z",
+      "reactions": {
+        "thumbsUp": 0,
+        "tada": 0,
+        "heart": 0,
+        "rocket": 0,
+        "eyes": 0
+      }
+    },
+    {
+      "id": "17fc",
+      "title": "Nihil perspiciatis ",
+      "content": "Illo et id est liber",
+      "userId": "3",
+      "date": "2025-02-18T18:39:47.086Z",
+      "reactions": {
+        "thumbsUp": 0,
+        "tada": 0,
+        "heart": 0,
+        "rocket": 0,
+        "eyes": 0
+      }
+    },
+    {
+      "id": "fd51",
+      "title": "Quas laborum odio qu",
+      "content": "Quia omnis voluptate",
+      "userId": "3",
+      "date": "2025-02-18T18:40:18.744Z",
+      "reactions": {
+        "thumbsUp": 0,
+        "tada": 0,
+        "heart": 0,
+        "rocket": 0,
+        "eyes": 0
+      }
+    },
+    {
+      "id": "fa2b",
+      "title": "Ducimus omnis culpa",
+      "content": "Labore eu quia quas ",
+      "userId": "2",
+      "date": "2025-02-18T18:40:49.764Z",
+      "reactions": {
+        "thumbsUp": 0,
+        "tada": 0,
+        "heart": 0,
+        "rocket": 0,
+        "eyes": 0
+      }
+    }
+  ],
+  "users": [
+    {
+      "id": "1",
+      "name": "Tianna Jenkins"
+    },
+    {
+      "id": "2",
+      "name": "Kevin Grant"
+    },
+    {
+      "id": "3",
+      "name": "Madison Price"
+    }
+  ],
+  "auth": {
+    "id": "1",
+    "name": "Tianna Jenkins"
+  }
+}

@@ -1,7 +1,7 @@
 'use client';
 
 import { Post, reactionAdded, ReactionName } from '@/_store/slice/postSlice';
-import { useAppDispatch } from '@/_hooks/redux';
+import { useAppDispatch } from '@/_store/withType';
 
 
 const reactionEmoji: Record<ReactionName, string> = {

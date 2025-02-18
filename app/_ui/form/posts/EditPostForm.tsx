@@ -1,9 +1,9 @@
 'use client';
 
 import React from 'react';
-import { useAppDispatch, useAppSelector } from '@/_hooks/redux';
 import { useRouter } from 'next/navigation';
 import { postUpdated, selectPostById } from '@/_store/slice/postSlice';
+import { useAppDispatch, useAppSelector } from '@/_store/withType';
 
 // TS types for the input fields
 // See: https://epicreact.dev/how-to-type-a-react-form-on-submit-handler/

@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 
 // TS types for the input fields
 // See: https://epicreact.dev/how-to-type-a-react-form-on-submit-handler/
@@ -14,17 +14,17 @@ interface AddPostFormElements extends HTMLFormElement {
     readonly elements: AddPostFormFields;
 }
 
-import { useAppDispatch, useAppSelector } from '@/_hooks/redux';
-import { postAdded } from '@/_store/slice/postSlice';
-import { selectAllUsers } from '@/_store/slice/userSlice';
-import { selectCurrentUsername } from '@/_store/slice/authSlice';
+import { useAppDispatch, useAppSelector } from '@/_store/withType';
+import { addNewPost } from '@/_store/slice/postSlice';
+import { selectCurrentUser } from '@/_store/slice/authSlice';
 
 export default function AddPostForm() {
     const dispatch = useAppDispatch();
-    const users = useAppSelector( selectAllUsers );
-    const userId = useAppSelector(selectCurrentUsername)!
+    const user = useAppSelector( selectCurrentUser )!;
 
-    const handleSubmit = ( e: React.FormEvent<AddPostFormElements> ) => {
+    const [ addRequestStatus, setAddRequestStatus ] = useState<'idle' | 'pending'>( 'idle' );
+
+    const handleSubmit = async ( e: React.FormEvent<AddPostFormElements> ) => {
         // Prevent server submission
         e.preventDefault();
 
@@ -32,17 +32,18 @@ export default function AddPostForm() {
         const title = elements.postTitle.value;
         const content = elements.postContent.value;
 
-        dispatch( postAdded( title, content, userId ) );
+        const form = e.currentTarget;
 
-        e.currentTarget.reset();
+        try {
+            setAddRequestStatus( 'pending' );
+            await dispatch( addNewPost( { title, content, userId: user.id } ) ).unwrap();
+            form.reset();
+        } catch ( err ) {
+            console.error( 'Failed to save the post: ', err );
+        } finally {
+            setAddRequestStatus( 'idle' );
+        }
     };
-
-    const usersOptions = users.map( user => (
-        <option key = { user.id } value = { user.id }>
-            { user.name }
-        </option>
-    ) );
-
 
     return (
         <section>
@@ -50,7 +51,6 @@ export default function AddPostForm() {
             <form onSubmit = { handleSubmit } className = 'flex gap-x-8 items-center'>
                 <label htmlFor = 'postTitle'>Post Title:</label>
                 <input type = 'text' id = 'postTitle' defaultValue = '' required className = 'border-2'/>
-                <label htmlFor = 'postAuthor'>Author:</label>
                 <label htmlFor = 'postContent'>Content:</label>
                 <textarea
                     id = 'postContent'
@@ -58,7 +58,8 @@ export default function AddPostForm() {
                     defaultValue = ''
                     required className = 'border-2'
                 />
-                <button className = 'border-2 px-4 py-2'>Save Post</button>
+                <button className = 'border-2 px-4 py-2' disabled = { addRequestStatus === 'pending' }>Save Post
+                </button>
             </form>
         </section>
     );

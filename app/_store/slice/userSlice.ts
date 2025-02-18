@@ -1,22 +1,28 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { RootState } from '@/_store/store';
-import { selectCurrentUsername } from '@/_store/slice/authSlice';
+import { createAppAsyncThunk } from '@/_store/withType';
 
-interface User {
+export interface User {
     id: string;
     name: string;
 }
 
-const initialState: User[] = [
-    { id: '0', name: 'Tianna Jenkins' },
-    { id: '1', name: 'Kevin Grant' },
-    { id: '2', name: 'Madison Price' }
-];
+const initialState: User[] = [];
+
+export const fetchUsers = createAppAsyncThunk( 'users/fetchUsers', async (): Promise<User[]> => {
+    const res = await fetch( 'http://localhost:9000/users' );
+    return res.json();
+} );
 
 const usersSlice = createSlice( {
     name: 'users',
     initialState,
-    reducers: {}
+    reducers: {},
+    extraReducers( builder ) {
+        builder.addCase( fetchUsers.fulfilled, ( state, action ) => {
+            return action.payload;
+        } );
+    }
 } );
 
 const { reducer: userReducer } = usersSlice;
@@ -26,8 +32,3 @@ export const selectAllUsers = ( state: RootState ) => state.users;
 
 export const selectUserById = ( state: RootState, userId: string | null ) =>
     state.users.find( user => user.id === userId );
-
-export const selectCurrentUser = ( state: RootState ) => {
-    const currentUsername = selectCurrentUsername( state );
-    return selectUserById( state, currentUsername );
-};

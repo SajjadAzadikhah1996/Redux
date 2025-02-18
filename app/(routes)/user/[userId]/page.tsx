@@ -1,11 +1,11 @@
 'use client';
 
 import React from 'react';
-import { useAppSelector } from '@/_hooks/redux';
 import { selectUserById } from '@/_store/slice/userSlice';
 import { notFound, useParams } from 'next/navigation';
 import { selectPostByUserId } from '@/_store/slice/postSlice';
 import Link from 'next/link';
+import { useAppSelector } from '@/_store/withType';
 
 export default function Page() {
     const { userId } = useParams<{ userId: string }>();
