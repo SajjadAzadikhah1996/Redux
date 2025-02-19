@@ -17,10 +17,12 @@ interface AddPostFormElements extends HTMLFormElement {
 import { useAppDispatch, useAppSelector } from '@/_store/withType';
 import { addNewPost } from '@/_store/slice/postSlice';
 import { selectCurrentUser } from '@/_store/slice/authSlice';
+import { useAddNewPostMutation } from '@/_store/api';
 
 export default function AddPostForm() {
     const dispatch = useAppDispatch();
     const user = useAppSelector( selectCurrentUser )!;
+    const [ addNewPost, { isLoading } ] = useAddNewPostMutation();
 
     const [ addRequestStatus, setAddRequestStatus ] = useState<'idle' | 'pending'>( 'idle' );
 
@@ -35,8 +37,7 @@ export default function AddPostForm() {
         const form = e.currentTarget;
 
         try {
-            setAddRequestStatus( 'pending' );
-            await dispatch( addNewPost( { title, content, userId: user.id } ) ).unwrap();
+            await addNewPost( { title, content, userId: user.id } ).unwrap();
             form.reset();
         } catch ( err ) {
             console.error( 'Failed to save the post: ', err );
@@ -58,7 +59,7 @@ export default function AddPostForm() {
                     defaultValue = ''
                     required className = 'border-2'
                 />
-                <button className = 'border-2 px-4 py-2' disabled = { addRequestStatus === 'pending' }>Save Post
+                <button className = 'border-2 px-4 py-2' disabled = { isLoading }>Save Post
                 </button>
             </form>
         </section>

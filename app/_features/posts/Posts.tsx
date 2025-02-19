@@ -1,29 +1,25 @@
 'use client';
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import Link from 'next/link';
 import {
     fetchPosts,
     Post,
-    selectAllPosts,
-    selectPostById, selectPostIds,
-    selectPostsError,
     selectPostsStatus
 } from '@/_store/slice/postSlice';
 import dynamic from 'next/dynamic';
 import { Spinner } from '@/_ui/icon/Spinner';
 import { ReactionButtons } from '@/_features/posts/ReactionButtons';
 import { useAppDispatch, useAppSelector } from '@/_store/withType';
-import { useSelector } from 'react-redux';
+import { useGetPostsQuery } from '@/_store/api';
 
 const TimeAgo = dynamic( () => import('@/_ui/TimeAgo'), { ssr: false } );
 
 interface PostExcerptProps {
-    postId: string;
+    post: Post;
 }
 
-let PostExcerpt = ( { postId }: PostExcerptProps ): React.ReactNode => {
-    const post = useAppSelector( ( state ) => selectPostById( state, postId ) );
+let PostExcerpt = ( { post }: PostExcerptProps ): React.ReactNode => {
     return (
         <article className = 'post-excerpt' key = { post.id }>
             <h3>
@@ -43,12 +39,17 @@ PostExcerpt = React.memo( PostExcerpt );
 
 
 export default function Posts() {
-    // Select the `state.posts` value from the store into the component
-    const posts = useAppSelector( selectAllPosts );
+    const { data: posts = [], isLoading, isSuccess, isError, error } = useGetPostsQuery();
+
+    const sortedPosts = useMemo(() => {
+        const sortedPosts = posts.slice()
+        // Sort posts in descending chronological order
+        sortedPosts.sort((a, b) => b.date.localeCompare(a.date))
+        return sortedPosts
+    }, [posts])
+
     const postStatus = useAppSelector( selectPostsStatus );
     const dispatch = useAppDispatch();
-    const postsError = useAppSelector( selectPostsError );
-    const orderedPostIds = useSelector( selectPostIds );
 
     useEffect( () => {
         if ( postStatus === 'idle' )
@@ -57,14 +58,12 @@ export default function Posts() {
 
     let content: React.ReactNode;
 
-    if ( postStatus === 'pending' ) {
+    if ( isLoading ) {
         content = <Spinner text = 'Loading...'/>;
-    } else if ( postStatus === 'succeeded' ) {
-        content = orderedPostIds.map( postId => (
-            <PostExcerpt key = { postId } postId = { postId }/>
-        ) );
-    } else if ( postStatus === 'failed' ) {
-        content = <div>{ postsError }</div>;
+    } else if ( isSuccess ) {
+        content = sortedPosts.map( post => <PostExcerpt key = { post.id } post = { post }/> );
+    } else if ( isError ) {
+        content = <div>{ JSON.stringify( error ) }</div>;
     }
 
     return (

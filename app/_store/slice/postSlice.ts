@@ -27,7 +27,7 @@ export interface Post {
 
 type PostUpdate = Pick<Post, 'id' | 'title' | 'content'>
 
-const initialReactions: Reactions = {
+export const initialReactions: Reactions = {
     thumbsUp: 0,
     tada: 0,
     heart: 0,
@@ -62,14 +62,14 @@ export const fetchPosts = createAppAsyncThunk( 'posts/fetchPosts', async (): Pro
     }
 } );
 
-type NewPost = Pick<Post, 'title' | 'content' | 'userId'>
+export type NewPost = Pick<Post, 'title' | 'content' | 'userId'>
 
 export const addNewPost = createAppAsyncThunk(
     'posts/addNewPost',
     // The payload creator receives the partial `{title, content, user}` object
     async ( initialPost: NewPost, { getState } ): Promise<Post> => {
         // We send the initial data to the fake API server
-        const res = await fetch( 'http://localhost:9000/posts?_embed=user', {
+        const res = await fetch( 'http://localhost:9000/posts', {
             method: 'POST',
             body: JSON.stringify( { ...initialPost, date: new Date().toISOString(), reactions: initialReactions } )
         } );
