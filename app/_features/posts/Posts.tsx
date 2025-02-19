@@ -2,19 +2,28 @@
 
 import React, { useEffect } from 'react';
 import Link from 'next/link';
-import { fetchPosts, Post, selectAllPosts, selectPostsError, selectPostsStatus } from '@/_store/slice/postSlice';
+import {
+    fetchPosts,
+    Post,
+    selectAllPosts,
+    selectPostById, selectPostIds,
+    selectPostsError,
+    selectPostsStatus
+} from '@/_store/slice/postSlice';
 import dynamic from 'next/dynamic';
 import { Spinner } from '@/_ui/icon/Spinner';
 import { ReactionButtons } from '@/_features/posts/ReactionButtons';
 import { useAppDispatch, useAppSelector } from '@/_store/withType';
+import { useSelector } from 'react-redux';
 
 const TimeAgo = dynamic( () => import('@/_ui/TimeAgo'), { ssr: false } );
 
 interface PostExcerptProps {
-    post: Post;
+    postId: string;
 }
 
-function PostExcerpt( { post }: PostExcerptProps ) {
+let PostExcerpt = ( { postId }: PostExcerptProps ): React.ReactNode => {
+    const post = useAppSelector( ( state ) => selectPostById( state, postId ) );
     return (
         <article className = 'post-excerpt' key = { post.id }>
             <h3>
@@ -28,7 +37,10 @@ function PostExcerpt( { post }: PostExcerptProps ) {
             <ReactionButtons post = { post }/>
         </article>
     );
-}
+};
+
+PostExcerpt = React.memo( PostExcerpt );
+
 
 export default function Posts() {
     // Select the `state.posts` value from the store into the component
@@ -36,6 +48,7 @@ export default function Posts() {
     const postStatus = useAppSelector( selectPostsStatus );
     const dispatch = useAppDispatch();
     const postsError = useAppSelector( selectPostsError );
+    const orderedPostIds = useSelector( selectPostIds );
 
     useEffect( () => {
         if ( postStatus === 'idle' )
@@ -47,13 +60,8 @@ export default function Posts() {
     if ( postStatus === 'pending' ) {
         content = <Spinner text = 'Loading...'/>;
     } else if ( postStatus === 'succeeded' ) {
-        // Sort posts in reverse chronological order by datetime string
-        const orderedPosts = posts
-            .slice()
-            .sort( ( a, b ) => b.date.localeCompare( a.date ) );
-
-        content = orderedPosts.map( post => (
-            <PostExcerpt key = { post.id } post = { post }/>
+        content = orderedPostIds.map( postId => (
+            <PostExcerpt key = { postId } postId = { postId }/>
         ) );
     } else if ( postStatus === 'failed' ) {
         content = <div>{ postsError }</div>;

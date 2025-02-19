@@ -3,9 +3,9 @@
 import React from 'react';
 import { selectUserById } from '@/_store/slice/userSlice';
 import { notFound, useParams } from 'next/navigation';
-import { selectPostByUserId } from '@/_store/slice/postSlice';
 import Link from 'next/link';
 import { useAppSelector } from '@/_store/withType';
+import { selectPostsByUser } from '@/_store/slice/postSlice';
 
 export default function Page() {
     const { userId } = useParams<{ userId: string }>();
@@ -14,7 +14,7 @@ export default function Page() {
     if ( !author )
         notFound();
 
-    const posts = useAppSelector( state => selectPostByUserId( state, author.id ) );
+    const posts = useAppSelector( state => selectPostsByUser( state, author.id ) );
 
     return (
         <React.Fragment>
